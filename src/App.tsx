@@ -4,11 +4,17 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { Loading3D } from "@/components/Loading3D";
+import { SEOHead } from "@/components/SEOHead";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { PerformanceMonitor } from "@/components/PerformanceMonitor";
+import { OfflineIndicator } from "@/components/OfflineIndicator";
+import { Analytics } from "@/components/Analytics";
 import Index from "./pages/Index";
 import Welcome from "./pages/Welcome";
 import Settings from "./pages/Settings";
@@ -35,6 +41,8 @@ import PlotMapping from "./pages/PlotMapping";
 import Mythbuster from "./pages/Mythbuster";
 import CustomTips from "./pages/CustomTips";
 import ExpertFinder from "./pages/ExpertFinder";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 import "./App.css";
 
@@ -57,15 +65,21 @@ function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ScrollToTop />
-        <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-          <LanguageProvider>
-            <AuthProvider>
-              <TooltipProvider>
-                <Toaster />
-                <Routes>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <ScrollToTop />
+            <SEOHead />
+            <PerformanceMonitor />
+            <OfflineIndicator />
+            <Analytics />
+            <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+              <LanguageProvider>
+                <AuthProvider>
+                  <TooltipProvider>
+                    <Toaster />
+                    <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/welcome" element={<Welcome />} />
                   <Route path="/settings" element={<Settings />} />
@@ -91,15 +105,19 @@ function App() {
                   <Route path="/mythbuster" element={<Mythbuster />} />
                   <Route path="/custom-tips" element={<CustomTips />} />
                   <Route path="/expert-finder" element={<ExpertFinder />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/terms" element={<Terms />} />
                   
                   <Route path="*" element={<NotFound />} />
-                </Routes>
-              </TooltipProvider>
-            </AuthProvider>
-          </LanguageProvider>
-        </ThemeProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+                  </Routes>
+                </TooltipProvider>
+              </AuthProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </BrowserRouter>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 }
 
