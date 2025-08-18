@@ -1,0 +1,46 @@
+
+project_id = "eskoygzvphbagpgzutxr"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[auth]
+enabled = true
+port = 54324
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://eskoygzvphbagpgzutxr.supabase.co"]
+jwt_expiry = 3600
+
+[db]
+enabled = true
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[functions.ai-crop-analysis]
+verify_jwt = false
+
+[functions.ai-custom-tips]
+verify_jwt = false
+
+[storage]
+enabled = true
+port = 54323
+file_size_limit = "50MiB"
+
+[edge-runtime]
+enabled = true
+
+[analytics]
+enabled = false
+
+[ingest]
+enabled = false
+
+[studio]
+enabled = true
+port = 54323

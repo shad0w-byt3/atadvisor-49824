@@ -1,0 +1,43 @@
+
+{
+  "expo": {
+    "name": "AgriTech Advisor",
+    "slug": "agritech-advisor",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./public/favicon.ico",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./public/favicon.ico",
+      "resizeMode": "contain",
+      "backgroundColor": "#16a34a"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.lovable.agritech-advisor"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./public/favicon.ico",
+        "backgroundColor": "#16a34a"
+      },
+      "package": "app.lovable.agritech_advisor"
+    },
+    "web": {
+      "favicon": "./public/favicon.ico",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-camera",
+      "expo-media-library"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "88dd63c7-870f-4a7c-9ac0-00f40750f87e"
+      }
+    }
+  }
+}
