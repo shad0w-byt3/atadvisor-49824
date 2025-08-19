@@ -1,3 +1,4 @@
+import { NotificationCenter } from '@/components/NotificationCenter';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,6 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { Bell, Settings, User, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { NotificationCenter } from '@/components/NotificationCenter';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Loading3D } from '@/components/Loading3D';
 import { usePageTransition } from '@/hooks/usePageTransition';
@@ -49,19 +49,7 @@ export const Header = () => {
         {/* Desktop Actions */}
         <div className="hidden sm:flex items-center gap-2">
           {/* Notifications */}
-          <div className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowNotifications(true)}
-              className="h-9 w-9 relative touch-manipulation"
-            >
-              <Bell className="h-4 w-4" />
-              <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500 text-white border-2 border-background">
-                3
-              </Badge>
-            </Button>
-          </div>
+          <NotificationCenter />
 
           {/* Theme Toggle */}
           <ThemeToggle />

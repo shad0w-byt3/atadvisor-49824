@@ -34,9 +34,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(session?.user ?? null);
         setIsLoading(false);
         
-        // If user signs in, mark as visited
+        // If user signs in, mark as visited and create profile if needed
         if (session?.user) {
           localStorage.setItem('hasVisitedApp', 'true');
+          createUserProfile(session.user);
         }
       }
     );
@@ -50,6 +51,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const createUserProfile = async (user: User) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          user_id: user.id,
+          name: user.user_metadata?.name || user.email?.split('@')[0] || 'Farmer',
+          email: user.email,
+        }, { 
+          onConflict: 'user_id' 
+        });
+      
+      if (error && error.code !== '23505') {
+        console.error('Error creating user profile:', error);
+      }
+    } catch (error) {
+      console.error('Error in createUserProfile:', error);
+    }
+  };
 
   const signOut = async () => {
     await supabase.auth.signOut();
