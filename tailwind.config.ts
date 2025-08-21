@@ -57,7 +57,11 @@ export default {
 					green: 'hsl(var(--agriculture-green))',
 					'light-green': 'hsl(var(--agriculture-light-green))',
 					earth: 'hsl(var(--agriculture-earth))',
-					warm: 'hsl(var(--agriculture-warm))'
+					warm: 'hsl(var(--agriculture-warm))',
+					success: 'hsl(var(--agriculture-success))',
+					warning: 'hsl(var(--agriculture-warning))',
+					danger: 'hsl(var(--agriculture-danger))',
+					info: 'hsl(var(--agriculture-info))'
 				}
 			},
 			borderRadius: {
@@ -89,13 +93,28 @@ export default {
 				'pulse-green': {
 					'0%, 100%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.4)' },
 					'50%': { boxShadow: '0 0 0 10px rgba(34, 197, 94, 0)' }
+				},
+				'slide-up': {
+					'0%': { transform: 'translateY(20px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'scale-up': {
+					'0%': { transform: 'scale(0.95)', opacity: '0' },
+					'100%': { transform: 'scale(1)', opacity: '1' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.5s ease-out',
-				'pulse-green': 'pulse-green 2s infinite'
+				'pulse-green': 'pulse-green 2s infinite',
+				'slide-up': 'slide-up 0.6s ease-out',
+				'scale-up': 'scale-up 0.4s ease-out',
+				'float': 'float 3s ease-in-out infinite'
 			}
 		}
 	},

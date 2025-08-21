@@ -6,7 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Header } from '@/components/Header';
 import { WeatherWidget } from '@/components/WeatherWidget';
 import { AIChatInterface } from '@/components/AIChatInterface';
-import { FeatureCards } from '@/components/FeatureCards';
+import { EnhancedFeatureCards } from '@/components/EnhancedFeatureCards';
 import { QuickStats } from '@/components/QuickStats';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { AppTour } from '@/components/AppTour';
@@ -224,7 +224,7 @@ const Index = () => {
           
           <div className="relative z-10">
             <h3 className="text-lg font-semibold text-agriculture-green mb-4">{t('main.tools')}</h3>
-            <FeatureCards />
+            <EnhancedFeatureCards />
           </div>
         </section>
 
