@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Leaf, Users, Camera, TrendingUp } from 'lucide-react';
 import { Loading3D } from '@/components/Loading3D';
 
@@ -60,51 +61,73 @@ export const WelcomeScreen = ({ onGetStarted, onLogin }: WelcomeScreenProps) => 
   }
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
-      {/* Background with Technology Integration - Optimized for mobile */}
-      <div className="absolute inset-0">
-        {/* Primary background with farming technology */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80')`
-          }}
-        />
-        
-        {/* Secondary overlay with woman using laptop for tech integration */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80')`
-          }}
-        />
-        
-        {/* Gradient overlay for readability - Enhanced for mobile */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-900/85 via-blue-900/75 to-green-800/85"></div>
-        
-        {/* Subtle pattern overlay - Responsive */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
-          backgroundSize: '20px 20px'
+    <div className="min-h-screen bg-gradient-to-br from-agriculture-green/5 via-white to-agriculture-light-green/10 overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23166534' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+          backgroundSize: "20px 20px",
+          backgroundRepeat: "repeat"
         }}></div>
       </div>
 
-      {/* Content - Optimized for all screen sizes */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center py-8">
-        {/* Logo and Title with enhanced responsive styling */}
-        <div className="mb-6 sm:mb-8">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 agriculture-gradient rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-2xl border-4 border-white/20 backdrop-blur-sm">
-            <span className="text-white text-3xl sm:text-4xl lg:text-5xl">🌱</span>
+      {/* Status Bar */}
+      <div className="relative z-10 p-4">
+        <div className="flex items-center justify-between w-full max-w-4xl mx-auto">
+          <div className="flex items-center gap-3">
+            <Badge 
+              variant="default"
+              className="flex items-center gap-1.5 px-3 py-1 bg-agriculture-success/10 text-agriculture-success border-agriculture-success/30"
+            >
+              <div className="w-2 h-2 bg-agriculture-success rounded-full animate-pulse"></div>
+              Online
+            </Badge>
+            <Badge 
+              variant="outline"
+              className="flex items-center gap-1.5 px-3 py-1 bg-agriculture-info/10 text-agriculture-info border-agriculture-info/30"
+            >
+              AI Ready
+            </Badge>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 drop-shadow-lg leading-tight">
+          <Badge 
+            variant="outline"
+            className="flex items-center gap-1.5 px-3 py-1 bg-agriculture-warning/10 text-agriculture-warning border-agriculture-warning/30"
+          >
+            Secure
+          </Badge>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 space-y-8">
+        {/* Hero Section */}
+        <div className="text-center space-y-6 max-w-4xl mx-auto animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-agriculture-green/10 backdrop-blur-md rounded-full border border-agriculture-green/20 mb-4">
+            <div className="w-2 h-2 bg-agriculture-green rounded-full animate-pulse"></div>
+            <span className="text-sm text-agriculture-green font-medium">Welcome to the Future of Farming</span>
+          </div>
+          
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-agriculture-green mb-6 animate-slide-up">
             AgriTech Advisor
           </h1>
-          <p className="text-lg sm:text-xl lg:text-2xl text-white/90 max-w-sm sm:max-w-md lg:max-w-lg drop-shadow-md px-2">
-            Your intelligent farming companion powered by AI
+          
+          <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '200ms' }}>
+            Your AI-powered companion for smarter farming decisions, better yields, and sustainable agriculture
           </p>
-          <div className="mt-2 sm:mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-xs sm:text-sm text-white/80">Advanced Agricultural Technology</span>
+
+          <div className="flex flex-wrap justify-center gap-4 mt-8 animate-slide-up" style={{ animationDelay: '400ms' }}>
+            <Badge variant="secondary" className="px-4 py-2 text-sm">
+              <div className="w-4 h-4 mr-1 text-yellow-500">⭐</div>
+              4.9/5 Rating
+            </Badge>
+            <Badge variant="secondary" className="px-4 py-2 text-sm">
+              <Users className="w-4 h-4 mr-1" />
+              50k+ Farmers
+            </Badge>
+            <Badge variant="secondary" className="px-4 py-2 text-sm">
+              <div className="w-4 h-4 mr-1 text-green-500">🛡️</div>
+              Enterprise Security
+            </Badge>
           </div>
         </div>
 
