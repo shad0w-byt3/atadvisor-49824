@@ -1,1 +1,10 @@
 project_id = "mzlbkplzjvrkwucmbvij"
+
+[functions.ai-crop-analysis]
+verify_jwt = false
+
+[functions.ai-custom-tips]
+verify_jwt = false
+
+[functions.gemini-chat]
+verify_jwt = false

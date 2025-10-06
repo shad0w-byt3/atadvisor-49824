@@ -160,8 +160,37 @@ export const AIChatInterface = () => {
     setMessage('');
     setIsTyping(true);
 
-    // Simulate AI processing time
-    setTimeout(() => {
+    try {
+      // Call Gemini AI via edge function
+      const response = await fetch(
+        'https://mzlbkplzjvrkwucmbvij.supabase.co/functions/v1/gemini-chat',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: newUserMessage.text,
+            language: language,
+            conversationHistory: messages
+          })
+        }
+      );
+
+      const data = await response.json();
+      
+      const botResponse: Message = {
+        id: messages.length + 2,
+        type: 'bot',
+        text: data.response || 'Sorry, I could not generate a response.',
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      console.error('Error calling Gemini AI:', error);
+      
+      // Fallback to mock response if API fails
       const botResponse: Message = {
         id: messages.length + 2,
         type: 'bot',
@@ -170,8 +199,19 @@ export const AIChatInterface = () => {
       };
       
       setMessages(prev => [...prev, botResponse]);
+      
+      toast({
+        title: language === 'en' ? 'Connection Error' : 
+               language === 'fr' ? 'Erreur de Connexion' : 
+               'Ikosa ryo Guhuza',
+        description: language === 'en' ? 'Using offline mode. Some features may be limited.' :
+                    language === 'fr' ? 'Utilisation du mode hors ligne. Certaines fonctionnalités peuvent être limitées.' :
+                    'Ukoresha uburyo bwo kuri interineti. Ibintu bimwe bishobora kuba bigarukira.',
+        variant: 'destructive'
+      });
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 2000); // 1-3 second response time
+    }
   };
 
   const handleQuickQuestion = (question: string) => {
