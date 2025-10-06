@@ -1,43 +1,60 @@
-
 import { Badge } from '@/components/ui/badge';
-import { Wifi, WifiOff, Battery, Signal } from 'lucide-react';
+import { Wifi, WifiOff, Cloud, CloudOff } from 'lucide-react';
 
-export const StatusIndicator = () => {
-  const isOnline = navigator.onLine;
-  const batteryLevel = 85; // In a real app, this would come from battery API
-  const signalStrength = 'good'; // In a real app, this would come from network API
+interface StatusIndicatorProps {
+  isOnline?: boolean;
+  isCloudConnected?: boolean;
+  className?: string;
+}
 
+export const StatusIndicator = ({ 
+  isOnline = true, 
+  isCloudConnected = true,
+  className = ''
+}: StatusIndicatorProps) => {
   return (
-    <div className="flex items-center gap-2 text-xs">
-      {/* Network Status */}
-      <div className="flex items-center gap-1">
+    <div className={`flex items-center gap-2 ${className}`}>
+      <Badge 
+        variant={isOnline ? "default" : "destructive"}
+        className={`flex items-center gap-1.5 px-3 py-1.5 backdrop-blur-sm transition-all duration-300 ${
+          isOnline 
+            ? 'bg-success/10 text-success border-success/30 hover:bg-success/20' 
+            : 'bg-destructive/10 text-destructive border-destructive/30'
+        }`}
+      >
         {isOnline ? (
-          <Wifi className="h-3 w-3 text-green-600" />
+          <>
+            <Wifi className="w-3 h-3" />
+            <div className="w-1.5 h-1.5 bg-success rounded-full animate-pulse shadow-glow"></div>
+            <span className="text-xs font-semibold">Online</span>
+          </>
         ) : (
-          <WifiOff className="h-3 w-3 text-red-600" />
+          <>
+            <WifiOff className="w-3 h-3" />
+            <span className="text-xs font-semibold">Offline</span>
+          </>
         )}
-        <Badge variant={isOnline ? "default" : "destructive"} className="text-xs px-1 py-0">
-          {isOnline ? "Online" : "Offline"}
+      </Badge>
+
+      {isCloudConnected && (
+        <Badge 
+          variant="outline"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 text-accent border-accent/30 backdrop-blur-sm hover:bg-accent/20 transition-all duration-300"
+        >
+          <Cloud className="w-3 h-3" />
+          <span className="text-xs font-semibold">Synced</span>
         </Badge>
-      </div>
+      )}
 
-      {/* Signal Strength */}
-      <div className="flex items-center gap-1">
-        <Signal className={`h-3 w-3 ${
-          signalStrength === 'good' ? 'text-green-600' : 
-          signalStrength === 'fair' ? 'text-yellow-600' : 'text-red-600'
-        }`} />
-        <span className="text-muted-foreground">{signalStrength}</span>
-      </div>
-
-      {/* Battery Level */}
-      <div className="flex items-center gap-1">
-        <Battery className={`h-3 w-3 ${
-          batteryLevel > 50 ? 'text-green-600' : 
-          batteryLevel > 20 ? 'text-yellow-600' : 'text-red-600'
-        }`} />
-        <span className="text-muted-foreground">{batteryLevel}%</span>
-      </div>
+      {!isCloudConnected && isOnline && (
+        <Badge 
+          variant="outline"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-muted/50 text-muted-foreground border-muted-foreground/30 backdrop-blur-sm"
+        >
+          <CloudOff className="w-3 h-3" />
+          <span className="text-xs font-semibold">Local</span>
+        </Badge>
+      )}
     </div>
   );
 };

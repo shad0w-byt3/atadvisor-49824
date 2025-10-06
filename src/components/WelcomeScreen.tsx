@@ -61,39 +61,45 @@ export const WelcomeScreen = ({ onGetStarted, onLogin }: WelcomeScreenProps) => 
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-agriculture-green/5 via-white to-agriculture-light-green/10 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
+    <div className="min-h-screen bg-gradient-elegant overflow-hidden relative">
+      {/* Animated Background Gradient Orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '0s' }}></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }}></div>
+      </div>
+
+      {/* Animated Grid Pattern */}
+      <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute inset-0" style={{
-          backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23166534' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
-          backgroundSize: "20px 20px",
-          backgroundRepeat: "repeat"
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23166534' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundSize: "30px 30px"
         }}></div>
       </div>
 
       {/* Status Bar */}
-      <div className="relative z-10 p-4">
+      <div className="relative z-10 p-4 animate-slide-down">
         <div className="flex items-center justify-between w-full max-w-4xl mx-auto">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Badge 
               variant="default"
-              className="flex items-center gap-1.5 px-3 py-1 bg-agriculture-success/10 text-agriculture-success border-agriculture-success/30"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-success/10 text-success border-success/30 backdrop-blur-sm hover:bg-success/20 transition-colors"
             >
-              <div className="w-2 h-2 bg-agriculture-success rounded-full animate-pulse"></div>
-              Online
+              <div className="w-2 h-2 bg-success rounded-full animate-pulse shadow-glow"></div>
+              <span className="text-xs sm:text-sm font-medium">Online</span>
             </Badge>
             <Badge 
               variant="outline"
-              className="flex items-center gap-1.5 px-3 py-1 bg-agriculture-info/10 text-agriculture-info border-agriculture-info/30"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 text-accent border-accent/30 backdrop-blur-sm hover:bg-accent/20 transition-colors"
             >
-              AI Ready
+              <span className="text-xs sm:text-sm font-medium">AI Ready</span>
             </Badge>
           </div>
           <Badge 
             variant="outline"
-            className="flex items-center gap-1.5 px-3 py-1 bg-agriculture-warning/10 text-agriculture-warning border-agriculture-warning/30"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary border-primary/30 backdrop-blur-sm hover:bg-primary/20 transition-colors"
           >
-            Secure
+            <span className="text-xs sm:text-sm font-medium">🛡️ Secure</span>
           </Badge>
         </div>
       </div>
@@ -101,86 +107,101 @@ export const WelcomeScreen = ({ onGetStarted, onLogin }: WelcomeScreenProps) => 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 space-y-8">
         {/* Hero Section */}
-        <div className="text-center space-y-6 max-w-4xl mx-auto animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-agriculture-green/10 backdrop-blur-md rounded-full border border-agriculture-green/20 mb-4">
-            <div className="w-2 h-2 bg-agriculture-green rounded-full animate-pulse"></div>
-            <span className="text-sm text-agriculture-green font-medium">Welcome to the Future of Farming</span>
+        <div className="text-center space-y-6 max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-subtle backdrop-blur-md rounded-full border border-primary/20 mb-4 animate-fade-in hover-scale shadow-elegant">
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse shadow-glow"></div>
+            <span className="text-sm text-primary font-semibold">Welcome to the Future of Farming</span>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-agriculture-green mb-6 animate-slide-up">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-6 animate-slide-up leading-tight">
             AgriTech Advisor
           </h1>
           
-          <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '200ms' }}>
-            Your AI-powered companion for smarter farming decisions, better yields, and sustainable agriculture
+          <p className="text-xl sm:text-2xl text-foreground/80 max-w-3xl mx-auto leading-relaxed animate-slide-up font-medium" style={{ animationDelay: '100ms' }}>
+            Your AI-powered companion for <span className="text-accent font-bold">smarter farming decisions</span>, <span className="text-secondary font-bold">better yields</span>, and <span className="text-primary font-bold">sustainable agriculture</span>
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4 mt-8 animate-slide-up" style={{ animationDelay: '400ms' }}>
-            <Badge variant="secondary" className="px-4 py-2 text-sm">
-              <div className="w-4 h-4 mr-1 text-yellow-500">⭐</div>
-              4.9/5 Rating
+          <div className="flex flex-wrap justify-center gap-3 mt-8 animate-scale-in" style={{ animationDelay: '200ms' }}>
+            <Badge variant="secondary" className="px-4 py-2.5 text-sm hover-scale shadow-sm bg-gradient-subtle backdrop-blur-sm border-primary/20">
+              <span className="mr-2">⭐</span>
+              <span className="font-semibold">4.9/5 Rating</span>
             </Badge>
-            <Badge variant="secondary" className="px-4 py-2 text-sm">
-              <Users className="w-4 h-4 mr-1" />
-              50k+ Farmers
+            <Badge variant="secondary" className="px-4 py-2.5 text-sm hover-scale shadow-sm bg-gradient-subtle backdrop-blur-sm border-primary/20">
+              <Users className="w-4 h-4 mr-2" />
+              <span className="font-semibold">50k+ Farmers</span>
             </Badge>
-            <Badge variant="secondary" className="px-4 py-2 text-sm">
-              <div className="w-4 h-4 mr-1 text-green-500">🛡️</div>
-              Enterprise Security
+            <Badge variant="secondary" className="px-4 py-2.5 text-sm hover-scale shadow-sm bg-gradient-subtle backdrop-blur-sm border-primary/20">
+              <span className="mr-2">🛡️</span>
+              <span className="font-semibold">Enterprise Secure</span>
             </Badge>
           </div>
         </div>
 
         {/* Features Grid - Responsive layout */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8 max-w-sm sm:max-w-md lg:max-w-4xl w-full">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8 max-w-sm sm:max-w-md lg:max-w-4xl w-full animate-fade-in" style={{ animationDelay: '300ms' }}>
           {features.map((feature, index) => (
-            <Card key={index} className="p-3 sm:p-4 text-center bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 transition-all duration-300 group touch-manipulation">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
-                <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+            <Card 
+              key={index} 
+              className="group p-4 sm:p-5 text-center bg-card/50 backdrop-blur-lg border-border/50 hover:border-primary/50 hover:shadow-elegant transition-all duration-300 touch-manipulation overflow-hidden relative"
+              style={{ animationDelay: `${400 + index * 100}ms` }}
+            >
+              {/* Gradient overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
+              
+              <div className="relative z-10">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-sm">
+                  <feature.icon className="h-6 w-6 sm:h-7 sm:w-7 text-primary-foreground" />
+                </div>
+                <h3 className="font-bold text-sm sm:text-base text-foreground mb-1.5 leading-tight group-hover:text-primary transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-snug">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="font-semibold text-xs sm:text-sm text-white mb-1 leading-tight">
-                {feature.title}
-              </h3>
-              <p className="text-xs text-white/80 leading-tight">
-                {feature.description}
-              </p>
             </Card>
           ))}
         </div>
 
         {/* CTA Buttons - Mobile optimized */}
-        <div className="space-y-3 w-full max-w-sm sm:max-w-md lg:max-w-lg px-2">
+        <div className="space-y-3 w-full max-w-sm sm:max-w-md lg:max-w-lg px-2 animate-fade-in" style={{ animationDelay: '500ms' }}>
           <Button 
             onClick={handleGetStarted}
-            className="w-full bg-agriculture-green hover:bg-agriculture-green/90 text-white py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 min-h-[48px] touch-manipulation"
+            className="w-full bg-gradient-primary hover:shadow-glow text-primary-foreground py-4 sm:py-5 text-base sm:text-lg font-bold shadow-elegant hover:scale-105 active:scale-95 min-h-[52px] touch-manipulation transition-all duration-300 relative overflow-hidden group"
           >
-            Get Started
+            <span className="relative z-10 flex items-center justify-center gap-2">
+              🚀 Get Started Free
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
           </Button>
           <Button 
             onClick={handleLogin}
             variant="outline" 
-            className="w-full border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 hover:border-white/50 py-3 sm:py-4 text-base sm:text-lg transition-all duration-300 min-h-[48px] touch-manipulation active:scale-95"
+            className="w-full border-border/50 bg-card/30 backdrop-blur-lg text-foreground hover:bg-card/50 hover:border-primary/50 hover:text-primary py-4 sm:py-5 text-base sm:text-lg font-semibold transition-all duration-300 min-h-[52px] touch-manipulation active:scale-95 hover:shadow-sm"
           >
-            Already have an account? Sign In
+            Already have an account? <span className="font-bold ml-1">Sign In</span>
           </Button>
         </div>
       </div>
 
       {/* Enhanced Footer - Responsive */}
-      <div className="relative z-10 p-4 sm:p-6 text-center">
-        <div className="flex items-center justify-center gap-3 sm:gap-4 mb-2">
-          <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center touch-manipulation">
-            <span className="text-white text-sm">🤖</span>
+      <div className="relative z-10 p-4 sm:p-6 text-center animate-fade-in" style={{ animationDelay: '600ms' }}>
+        <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3">
+          <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center touch-manipulation hover-scale shadow-sm">
+            <span className="text-lg">🤖</span>
           </div>
-          <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center touch-manipulation">
-            <span className="text-white text-sm">🌾</span>
+          <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center touch-manipulation hover-scale shadow-sm">
+            <span className="text-lg">🌾</span>
           </div>
-          <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center touch-manipulation">
-            <span className="text-white text-sm">📱</span>
+          <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center touch-manipulation hover-scale shadow-sm">
+            <span className="text-lg">📱</span>
           </div>
         </div>
-        <p className="text-xs sm:text-sm text-white/70">
-          Empowering farmers with technology since 2024
+        <p className="text-sm sm:text-base text-muted-foreground font-medium">
+          Empowering <span className="text-primary font-bold">50,000+</span> farmers with AI technology
+        </p>
+        <p className="text-xs text-muted-foreground/70 mt-1">
+          © 2024 AgriTech Advisor. All rights reserved.
         </p>
       </div>
     </div>

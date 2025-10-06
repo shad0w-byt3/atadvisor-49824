@@ -1,263 +1,214 @@
-
-import { Camera, TrendingUp, Calendar, Bug, Leaf, MapPin, Package, Gamepad2, BookOpen, Users, Trophy, Shield, DollarSign, Navigation, Lightbulb, UserCheck } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useState } from 'react';
-import { Loading3D } from '@/components/Loading3D';
-import { usePageTransition } from '@/hooks/usePageTransition';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Camera, TrendingUp, Calendar, Map, Leaf, 
+  MessageSquare, BookOpen, Users, Briefcase,
+  Calculator, Trophy, Gamepad2, Radio, Brain
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const OrganizedToolsGrid = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const { isTransitioning, navigateWithLoading } = usePageTransition();
+  const navigate = useNavigate();
 
-  const categories = [
-    { id: 'all', label: 'All Tools', color: 'bg-gray-100 text-gray-800' },
-    { id: 'ai-powered', label: 'AI Powered', color: 'bg-blue-100 text-blue-800' },
-    { id: 'education', label: 'Learning', color: 'bg-purple-100 text-purple-800' },
-    { id: 'financial', label: 'Financial', color: 'bg-green-100 text-green-800' },
-    { id: 'monitoring', label: 'Monitoring', color: 'bg-orange-100 text-orange-800' },
-    { id: 'community', label: 'Community', color: 'bg-pink-100 text-pink-800' }
-  ];
-
-  const tools = [
+  const toolCategories = [
     {
-      icon: Package,
-      title: "Smart Input Planner",
-      description: "Calculate exact inputs needed for your farm",
-      path: "/smart-input-planner",
-      category: 'ai-powered',
-      featured: true,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      loadingMessage: "Loading Smart Input Planner..."
+      category: 'AI & Analysis',
+      badge: '🤖 AI Powered',
+      tools: [
+        {
+          icon: Camera,
+          name: 'Crop Analysis',
+          description: 'AI-powered crop health assessment',
+          path: '/camera-analysis',
+          color: 'text-accent',
+          new: true
+        },
+        {
+          icon: Brain,
+          name: 'AI Chat Assistant',
+          description: 'Ask farming questions in your language',
+          path: '/',
+          color: 'text-accent',
+          popular: true
+        },
+        {
+          icon: Calculator,
+          name: 'Smart Input Planner',
+          description: 'Optimize fertilizer and input costs',
+          path: '/smart-input-planner',
+          color: 'text-secondary'
+        }
+      ]
     },
     {
-      icon: Camera,
-      title: "Crop Growth Tracker",
-      description: "AI-powered photo diary for crop monitoring",
-      path: "/crop-tracker",
-      category: 'ai-powered',
-      featured: true,
-      color: "text-green-600",
-      bgColor: "bg-green-50",
-      loadingMessage: "Loading Crop Tracker..."
+      category: 'Market & Planning',
+      badge: '📈 Business Tools',
+      tools: [
+        {
+          icon: TrendingUp,
+          name: 'Market Prices',
+          description: 'Real-time crop prices and trends',
+          path: '/market',
+          color: 'text-primary',
+          popular: true
+        },
+        {
+          icon: Calendar,
+          name: 'Farming Calendar',
+          description: 'Plan planting and harvesting',
+          path: '/calendar',
+          color: 'text-success'
+        },
+        {
+          icon: Briefcase,
+          name: 'Micro Investment',
+          description: 'Small-scale investment opportunities',
+          path: '/micro-investment',
+          color: 'text-secondary'
+        }
+      ]
     },
     {
-      icon: TrendingUp,
-      title: "Smart Marketplace",
-      description: "Buy and sell crops locally",
-      path: "/smart-marketplace",
-      category: 'financial',
-      featured: true,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      loadingMessage: "Loading Smart Marketplace..."
+      category: 'Farm Management',
+      badge: '🌾 Operations',
+      tools: [
+        {
+          icon: Map,
+          name: 'Plot Mapping',
+          description: 'Map and track your farm plots',
+          path: '/plot-mapping',
+          color: 'text-accent'
+        },
+        {
+          icon: Leaf,
+          name: 'Crop Tracker',
+          description: 'Monitor crop growth and health',
+          path: '/crop-tracker',
+          color: 'text-success'
+        },
+        {
+          icon: Trophy,
+          name: 'Risk Dashboard',
+          description: 'Assess and manage farm risks',
+          path: '/risk-dashboard',
+          color: 'text-primary'
+        }
+      ]
     },
     {
-      icon: Gamepad2,
-      title: "Farming Game",
-      description: "Learn through interactive simulation",
-      path: "/farming-game",
-      category: 'education',
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
-      loadingMessage: "Loading Farming Game..."
+      category: 'Learning & Community',
+      badge: '📚 Education',
+      tools: [
+        {
+          icon: BookOpen,
+          name: 'Learning Paths',
+          description: 'Structured farming courses',
+          path: '/learning-paths',
+          color: 'text-accent'
+        },
+        {
+          icon: Users,
+          name: 'Expert Finder',
+          description: 'Connect with agricultural experts',
+          path: '/expert-finder',
+          color: 'text-secondary'
+        },
+        {
+          icon: MessageSquare,
+          name: 'Mentorship',
+          description: 'Get guidance from experienced farmers',
+          path: '/mentorship',
+          color: 'text-primary'
+        }
+      ]
     },
     {
-      icon: BookOpen,
-      title: "Learning Paths",
-      description: "Interactive courses with certificates",
-      path: "/learning-paths",
-      category: 'education',
-      color: "text-indigo-600",
-      bgColor: "bg-indigo-50",
-      loadingMessage: "Loading Learning Paths..."
-    },
-    {
-      icon: Users,
-      title: "Farm Podcast",
-      description: "Listen to expert tips and stories",
-      path: "/farm-podcast",
-      category: 'community',
-      color: "text-red-600",
-      bgColor: "bg-red-50",
-      loadingMessage: "Loading Farm Podcast..."
-    },
-    {
-      icon: UserCheck,
-      title: "Mentorship",
-      description: "Connect with experienced farmers",
-      path: "/mentorship",
-      category: 'community',
-      color: "text-green-600",
-      bgColor: "bg-green-50",
-      loadingMessage: "Loading Mentorship..."
-    },
-    {
-      icon: Trophy,
-      title: "Farm Challenges",
-      description: "Compete and win amazing prizes",
-      path: "/farm-challenges",
-      category: 'community',
-      color: "text-yellow-600",
-      bgColor: "bg-yellow-50",
-      loadingMessage: "Loading Farm Challenges..."
-    },
-    {
-      icon: Shield,
-      title: "Risk Dashboard",
-      description: "Monitor climate and financial risks",
-      path: "/risk-dashboard",
-      category: 'monitoring',
-      color: "text-red-600",
-      bgColor: "bg-red-50",
-      loadingMessage: "Loading Risk Dashboard..."
-    },
-    {
-      icon: Leaf,
-      title: "Crop Diversification",
-      description: "Smart intercropping recommendations",
-      path: "/crop-diversification",
-      category: 'ai-powered',
-      color: "text-green-600",
-      bgColor: "bg-green-50",
-      loadingMessage: "Loading Crop Diversification..."
-    },
-    {
-      icon: DollarSign,
-      title: "Micro-Investment",
-      description: "Access credit and investment opportunities",
-      path: "/micro-investment",
-      category: 'financial',
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      loadingMessage: "Loading Micro-Investment..."
-    },
-    {
-      icon: Navigation,
-      title: "Plot Mapping",
-      description: "AI-powered field mapping with satellite",
-      path: "/plot-mapping",
-      category: 'ai-powered',
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
-      loadingMessage: "Loading Plot Mapping..."
-    },
-    {
-      icon: Bug,
-      title: "Mythbuster",
-      description: "Debunk common farming myths",
-      path: "/mythbuster",
-      category: 'education',
-      color: "text-orange-600",
-      bgColor: "bg-orange-50",
-      loadingMessage: "Loading Mythbuster..."
-    },
-    {
-      icon: Lightbulb,
-      title: "Custom Tips",
-      description: "Personalized AI farming recommendations",
-      path: "/custom-tips",
-      category: 'ai-powered',
-      color: "text-yellow-600",
-      bgColor: "bg-yellow-50",
-      loadingMessage: "Loading Custom Tips..."
-    },
-    {
-      icon: MapPin,
-      title: "Expert Finder",
-      description: "Find nearby agricultural experts",
-      path: "/expert-finder",
-      category: 'community',
-      color: "text-indigo-600",
-      bgColor: "bg-indigo-50",
-      loadingMessage: "Loading Expert Finder..."
+      category: 'Entertainment & Extras',
+      badge: '🎮 Fun & More',
+      tools: [
+        {
+          icon: Gamepad2,
+          name: 'Farming Game',
+          description: 'Learn through interactive gameplay',
+          path: '/farming-game',
+          color: 'text-accent'
+        },
+        {
+          icon: Radio,
+          name: 'Farm Podcast',
+          description: 'Listen to farming tips and stories',
+          path: '/farm-podcast',
+          color: 'text-secondary'
+        },
+        {
+          icon: Trophy,
+          name: 'Farm Challenges',
+          description: 'Complete challenges, earn rewards',
+          path: '/farm-challenges',
+          color: 'text-success'
+        }
+      ]
     }
   ];
 
-  const filteredTools = selectedCategory === 'all' 
-    ? tools 
-    : tools.filter(tool => tool.category === selectedCategory);
-
-  const featuredTools = tools.filter(tool => tool.featured);
-
-  if (isTransitioning) {
-    return <Loading3D message="Loading Tool..." />;
-  }
+  const handleToolClick = (path: string) => {
+    navigate(path);
+  };
 
   return (
-    <div className="space-y-6">
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-2 justify-center">
-        {categories.map((category) => (
-          <Button
-            key={category.id}
-            variant={selectedCategory === category.id ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedCategory(category.id)}
-            className={`${selectedCategory === category.id ? 'bg-agriculture-green hover:bg-agriculture-green/90' : ''} transition-all duration-300`}
-          >
-            {category.label}
-          </Button>
-        ))}
-      </div>
+    <div className="w-full max-w-7xl mx-auto px-4 py-6 space-y-8">
+      {toolCategories.map((category, catIndex) => (
+        <div 
+          key={category.category}
+          className="animate-fade-in"
+          style={{ animationDelay: `${catIndex * 100}ms` }}
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <h3 className="text-2xl font-bold text-foreground">{category.category}</h3>
+            <Badge variant="secondary" className="bg-gradient-subtle">
+              {category.badge}
+            </Badge>
+          </div>
 
-      {/* Featured Tools (only show when 'all' is selected) */}
-      {selectedCategory === 'all' && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-agriculture-green flex items-center gap-2">
-            <Trophy className="w-5 h-5" />
-            Featured Tools
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {featuredTools.map((tool, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {category.tools.map((tool, toolIndex) => (
               <Card
-                key={index}
-                className="relative overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
-                onClick={() => navigateWithLoading(tool.path, tool.loadingMessage)}
+                key={tool.name}
+                onClick={() => handleToolClick(tool.path)}
+                className="group p-5 cursor-pointer hover:shadow-elegant transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 bg-gradient-to-br from-card/50 to-card backdrop-blur-sm animate-scale-in"
+                style={{ animationDelay: `${catIndex * 100 + toolIndex * 50}ms` }}
               >
-                <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">
-                  ⭐ Featured
-                </div>
-                <div className="p-6">
-                  <div className={`w-14 h-14 ${tool.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <tool.icon className={`w-7 h-7 ${tool.color}`} />
+                <div className="flex items-start gap-4">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-sm shrink-0`}>
+                    <tool.icon className={`w-6 h-6 text-primary-foreground`} />
                   </div>
-                  <h4 className="font-semibold text-lg text-agriculture-green mb-2">{tool.title}</h4>
-                  <p className="text-sm text-muted-foreground">{tool.description}</p>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h4 className={`font-bold text-base group-hover:${tool.color} transition-colors`}>
+                        {tool.name}
+                      </h4>
+                      {tool.new && (
+                        <Badge className="text-xs px-1.5 py-0 bg-accent text-accent-foreground">
+                          New
+                        </Badge>
+                      )}
+                      {tool.popular && (
+                        <Badge className="text-xs px-1.5 py-0 bg-primary text-primary-foreground">
+                          Popular
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-snug">
+                      {tool.description}
+                    </p>
+                  </div>
                 </div>
               </Card>
             ))}
           </div>
         </div>
-      )}
-
-      {/* All Tools Grid */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-agriculture-green">
-          {selectedCategory === 'all' ? 'All Tools' : categories.find(c => c.id === selectedCategory)?.label}
-          <span className="text-sm text-muted-foreground ml-2">({filteredTools.length} tools)</span>
-        </h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredTools.map((tool, index) => (
-            <Button
-              key={index}
-              variant="ghost"
-              className="h-auto flex-col gap-3 p-4 group hover:scale-105 transition-all duration-300 hover:shadow-md border border-transparent hover:border-agriculture-green/20"
-              onClick={() => navigateWithLoading(tool.path, tool.loadingMessage)}
-            >
-              <div className={`w-12 h-12 ${tool.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
-                <tool.icon className={`h-6 w-6 ${tool.color}`} />
-              </div>
-              
-              <div className="text-center">
-                <h4 className="font-semibold text-sm text-agriculture-green mb-1">{tool.title}</h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">{tool.description}</p>
-              </div>
-            </Button>
-          ))}
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
