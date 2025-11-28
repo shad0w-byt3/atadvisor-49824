@@ -10,12 +10,14 @@ import { EnhancedFeatureCards } from '@/components/EnhancedFeatureCards';
 import { QuickStats } from '@/components/QuickStats';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { AppTour } from '@/components/AppTour';
+import { OnboardingFlow } from '@/components/OnboardingFlow';
 import { OfflineSMS } from '@/components/OfflineSMS';
 import { RealTimeMarket } from '@/components/RealTimeMarket';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Award, TrendingUp, Users, Calendar } from 'lucide-react';
+import { useOnboarding } from '@/hooks/useOnboarding';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -23,6 +25,14 @@ const Index = () => {
   const { t } = useLanguage();
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [showTour, setShowTour] = useState(false);
+  const { 
+    hasCompletedOnboarding, 
+    hasSeenTour, 
+    completeOnboarding, 
+    completeTour, 
+    skipOnboarding 
+  } = useOnboarding();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     // Force scroll to top immediately
@@ -41,7 +51,15 @@ const Index = () => {
     // User is authenticated, mark as visited and stay on main page
     localStorage.setItem('hasVisitedApp', 'true');
     setIsCheckingAuth(false);
-  }, [user, isLoading, navigate]);
+    
+    // Show onboarding for new users
+    if (!hasCompletedOnboarding) {
+      setShowOnboarding(true);
+    } else if (hasCompletedOnboarding && !hasSeenTour) {
+      // Show tour if onboarding is done but tour hasn't been seen
+      setShowTour(true);
+    }
+  }, [user, isLoading, navigate, hasCompletedOnboarding, hasSeenTour]);
 
   // Show loading state while checking authentication
   if (isLoading || isCheckingAuth) {
@@ -63,8 +81,35 @@ const Index = () => {
     return null;
   }
 
+  const handleOnboardingComplete = () => {
+    completeOnboarding();
+    setShowOnboarding(false);
+    setShowTour(true);
+  };
+
+  const handleOnboardingSkip = () => {
+    skipOnboarding();
+    setShowOnboarding(false);
+  };
+
+  const handleTourClose = () => {
+    completeTour();
+    setShowTour(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50/50 via-white to-green-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Onboarding Flow */}
+      {showOnboarding && (
+        <OnboardingFlow 
+          onComplete={handleOnboardingComplete}
+          onSkip={handleOnboardingSkip}
+        />
+      )}
+      
+      {/* App Tour */}
+      {showTour && <AppTour onClose={handleTourClose} />}
+      
       <Header />
       
       <main className="p-4 space-y-6 pb-24">
@@ -265,9 +310,6 @@ const Index = () => {
       </main>
 
       <BottomNavigation />
-      
-      {/* App Tour Modal */}
-      {showTour && <AppTour onClose={() => setShowTour(false)} />}
     </div>
   );
 };

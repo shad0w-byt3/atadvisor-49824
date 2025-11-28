@@ -14,6 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useOnboarding } from '@/hooks/useOnboarding';
 import { 
   User, 
   Bell, 
@@ -25,7 +26,8 @@ import {
   Info,
   Download,
   Trash2,
-  Users
+  Users,
+  RefreshCw
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -33,6 +35,7 @@ const Settings = () => {
   const { t } = useLanguage();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const { resetOnboarding } = useOnboarding();
   const [notificationSettings, setNotificationSettings] = useState({
     weatherAlerts: true,
     marketUpdates: true,
@@ -64,6 +67,11 @@ const Settings = () => {
   const exportData = () => {
     // In a real app, this would export user data
     toast.success('Data export initiated. You will receive an email shortly.');
+  };
+
+  const handleResetOnboarding = () => {
+    resetOnboarding();
+    toast.success('Onboarding reset! Refresh the page to see the tour again.');
   };
 
   return (
@@ -225,6 +233,15 @@ const Settings = () => {
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
                       Clear Cache
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={handleResetOnboarding}
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Reset Tutorial
                     </Button>
                     
                     <div className="text-sm text-muted-foreground space-y-1">
