@@ -164,8 +164,8 @@ export const OrganizedToolsGrid = () => {
           style={{ animationDelay: `${catIndex * 100}ms` }}
         >
           <div className="flex items-center gap-3 mb-4">
-            <h3 className="text-2xl font-bold text-foreground">{category.category}</h3>
-            <Badge variant="secondary" className="bg-gradient-subtle">
+            <h3 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">{category.category}</h3>
+            <Badge variant="secondary" className="bg-gradient-subtle border-primary/20">
               {category.badge}
             </Badge>
           </div>
@@ -185,16 +185,16 @@ export const OrganizedToolsGrid = () => {
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className={`font-bold text-base group-hover:${tool.color} transition-colors`}>
+                      <h4 className="font-bold text-base text-foreground group-hover:text-primary transition-colors">
                         {tool.name}
                       </h4>
                       {tool.new && (
-                        <Badge className="text-xs px-1.5 py-0 bg-accent text-accent-foreground">
+                        <Badge className="text-xs px-1.5 py-0 bg-accent/20 text-accent border-accent/30">
                           New
                         </Badge>
                       )}
                       {tool.popular && (
-                        <Badge className="text-xs px-1.5 py-0 bg-primary text-primary-foreground">
+                        <Badge className="text-xs px-1.5 py-0 bg-primary/20 text-primary border-primary/30">
                           Popular
                         </Badge>
                       )}

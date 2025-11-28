@@ -114,17 +114,17 @@ export const AuthScreen = ({ onBack, initialMode = 'login' }: AuthScreenProps) =
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-elegant flex flex-col">
       {/* Header */}
       <div className="p-4 flex items-center">
         <Button variant="ghost" size="icon" onClick={onBack}>
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="flex items-center gap-2 ml-4">
-          <div className="w-8 h-8 agriculture-gradient rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">🌱</span>
           </div>
-          <span className="font-bold text-agriculture-green">AgriTech Advisor</span>
+          <span className="font-bold text-primary">AgriTech Advisor</span>
         </div>
       </div>
 
@@ -132,10 +132,10 @@ export const AuthScreen = ({ onBack, initialMode = 'login' }: AuthScreenProps) =
       <div className="flex-1 flex items-center justify-center px-6">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-agriculture-green">
+            <CardTitle className="text-2xl font-bold text-primary">
               {mode === 'login' ? 'Welcome Back' : 'Create Account'}
             </CardTitle>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               {mode === 'login' 
                 ? 'Sign in to your AgriTech account' 
                 : 'Join the smart farming revolution'
@@ -223,7 +223,7 @@ export const AuthScreen = ({ onBack, initialMode = 'login' }: AuthScreenProps) =
 
               <Button 
                 type="submit" 
-                className="w-full bg-agriculture-green hover:bg-agriculture-green/90"
+                className="w-full bg-gradient-primary hover:shadow-glow"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -238,12 +238,12 @@ export const AuthScreen = ({ onBack, initialMode = 'login' }: AuthScreenProps) =
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 {mode === 'login' ? "Don't have an account? " : "Already have an account? "}
                 <button
                   type="button"
                   onClick={switchMode}
-                  className="text-agriculture-green font-medium hover:underline"
+                  className="text-primary font-medium hover:underline"
                 >
                   {mode === 'login' ? 'Sign up' : 'Sign in'}
                 </button>
