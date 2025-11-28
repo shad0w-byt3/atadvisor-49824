@@ -37,7 +37,7 @@ export const EnhancedFeatureCards = () => {
       path: '/camera',
       category: 'AI Tools',
       status: 'new',
-      gradient: 'from-agriculture-green to-agriculture-success',
+      gradient: 'from-primary to-accent',
       delay: 0
     },
     {
@@ -48,7 +48,7 @@ export const EnhancedFeatureCards = () => {
       path: '/market',
       category: 'Market',
       status: 'trending',
-      gradient: 'from-agriculture-info to-blue-500',
+      gradient: 'from-accent to-secondary',
       delay: 100
     },
     {
@@ -59,7 +59,7 @@ export const EnhancedFeatureCards = () => {
       path: '/smart-input-planner',
       category: 'Planning',
       status: 'popular',
-      gradient: 'from-agriculture-warning to-orange-500',
+      gradient: 'from-secondary to-primary',
       delay: 200
     },
     {
@@ -81,7 +81,7 @@ export const EnhancedFeatureCards = () => {
       path: '/crop-tracker',
       category: 'Monitoring',
       status: null,
-      gradient: 'from-agriculture-earth to-amber-600',
+      gradient: 'from-primary to-secondary',
       delay: 400
     },
     {
@@ -92,7 +92,7 @@ export const EnhancedFeatureCards = () => {
       path: '/farm-podcast',
       category: 'Learning',
       status: null,
-      gradient: 'from-green-500 to-teal-500',
+      gradient: 'from-accent to-primary',
       delay: 500
     }
   ];
@@ -101,10 +101,10 @@ export const EnhancedFeatureCards = () => {
     if (!status) return null;
     
     const statusConfig = {
-      new: { text: 'New', className: 'bg-agriculture-success/20 text-agriculture-success border-agriculture-success/30' },
-      trending: { text: 'Trending', className: 'bg-agriculture-info/20 text-agriculture-info border-agriculture-info/30' },
-      popular: { text: 'Popular', className: 'bg-agriculture-warning/20 text-agriculture-warning border-agriculture-warning/30' },
-      fun: { text: 'Fun', className: 'bg-pink-500/20 text-pink-500 border-pink-500/30' }
+      new: { text: 'New', className: 'bg-accent/20 text-accent border-accent/30' },
+      trending: { text: 'Trending', className: 'bg-secondary/20 text-secondary border-secondary/30' },
+      popular: { text: 'Popular', className: 'bg-primary/20 text-primary border-primary/30' },
+      fun: { text: 'Fun', className: 'bg-accent/20 text-accent border-accent/30' }
     };
 
     const config = statusConfig[status as keyof typeof statusConfig];
@@ -140,7 +140,7 @@ export const EnhancedFeatureCards = () => {
                 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-foreground group-hover:text-agriculture-green transition-colors">
+                    <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                       {tool.title}
                     </h3>
                   </div>
@@ -153,8 +153,8 @@ export const EnhancedFeatureCards = () => {
                   <Badge variant="secondary" className="text-xs">
                     {tool.category}
                   </Badge>
-                  <div className="w-8 h-8 rounded-full bg-agriculture-green/10 flex items-center justify-center group-hover:bg-agriculture-green/20 transition-colors">
-                    <svg className="w-4 h-4 text-agriculture-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
