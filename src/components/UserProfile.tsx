@@ -7,14 +7,13 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { User, Camera, MapPin, Phone, Mail, Edit2, Save, X } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
 export const UserProfile = () => {
-  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
-    name: user?.user_metadata?.name || '',
+    name: localStorage.getItem('userName') || 'Farmer',
+    email: localStorage.getItem('userEmail') || 'farmer@example.com',
     phone: '',
     location: '',
     farmSize: '',
@@ -22,7 +21,8 @@ export const UserProfile = () => {
   });
 
   const handleSave = () => {
-    // In a real app, this would update the user profile in Supabase
+    localStorage.setItem('userName', profileData.name);
+    localStorage.setItem('userEmail', profileData.email);
     toast.success('Profile updated successfully!');
     setIsEditing(false);
   };
@@ -69,7 +69,7 @@ export const UserProfile = () => {
           <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Mail className="h-4 w-4" />
-              {user?.email}
+              {profileData.email}
             </div>
             <Badge variant="secondary" className="bg-green-100 text-green-700">
               Premium Farmer

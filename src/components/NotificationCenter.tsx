@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Bell, X, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 
 interface Notification {
   id: string;
@@ -16,94 +14,51 @@ interface Notification {
   created_at: string;
 }
 
+// Sample notifications for demo
+const sampleNotifications: Notification[] = [
+  {
+    id: '1',
+    title: 'Weather Alert',
+    message: 'Heavy rain expected tomorrow. Consider covering your crops.',
+    type: 'weather',
+    read: false,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '2',
+    title: 'Market Update',
+    message: 'Cassava prices have increased by 15% this week.',
+    type: 'market',
+    read: false,
+    created_at: new Date(Date.now() - 3600000).toISOString()
+  },
+  {
+    id: '3',
+    title: 'Task Reminder',
+    message: 'Time to apply fertilizer to your maize field.',
+    type: 'task',
+    read: true,
+    created_at: new Date(Date.now() - 86400000).toISOString()
+  }
+];
+
 export const NotificationCenter = () => {
-  const { user } = useAuth();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>(sampleNotifications);
   const [isOpen, setIsOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(
+    sampleNotifications.filter(n => !n.read).length
+  );
 
-  useEffect(() => {
-    if (user) {
-      fetchNotifications();
-      
-      // Real-time subscription for notifications
-      const channel = supabase
-        .channel('user-notifications')
-        .on('postgres_changes', {
-          event: '*',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${user.id}`
-        }, (payload) => {
-          console.log('Notification update:', payload);
-          fetchNotifications();
-        })
-        .subscribe();
-
-      return () => {
-        supabase.removeChannel(channel);
-      };
-    }
-  }, [user]);
-
-  const fetchNotifications = async () => {
-    if (!user) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(20);
-
-      if (error) throw error;
-
-      setNotifications((data || []).map(item => ({
-        ...item,
-        type: item.type as 'weather' | 'market' | 'task' | 'disease' | 'general'
-      })));
-      setUnreadCount(data?.filter(n => !n.read).length || 0);
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    }
+  const markAsRead = (notificationId: string) => {
+    setNotifications(prev =>
+      prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
+    );
+    setUnreadCount(prev => Math.max(0, prev - 1));
   };
 
-  const markAsRead = async (notificationId: string) => {
-    try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('id', notificationId);
-
-      if (error) throw error;
-
-      setNotifications(prev =>
-        prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
-      );
-      setUnreadCount(prev => Math.max(0, prev - 1));
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
-    }
-  };
-
-  const markAllAsRead = async () => {
-    if (!user) return;
-
-    try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('user_id', user.id)
-        .eq('read', false);
-
-      if (error) throw error;
-
-      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-      setUnreadCount(0);
-    } catch (error) {
-      console.error('Error marking all notifications as read:', error);
-    }
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setUnreadCount(0);
   };
 
   const getNotificationIcon = (type: Notification['type']) => {
@@ -127,8 +82,6 @@ export const NotificationCenter = () => {
     };
     return colors[type] || colors.general;
   };
-
-  if (!user) return null;
 
   return (
     <div className="relative">

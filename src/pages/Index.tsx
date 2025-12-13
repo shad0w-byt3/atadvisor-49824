@@ -1,7 +1,6 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Header } from '@/components/Header';
 import { WeatherWidget } from '@/components/WeatherWidget';
@@ -21,9 +20,7 @@ import { useOnboarding } from '@/hooks/useOnboarding';
 
 const Index = () => {
   const navigate = useNavigate();
-  const { user, isLoading } = useAuth();
   const { t } = useLanguage();
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [showTour, setShowTour] = useState(false);
   const { 
     hasCompletedOnboarding, 
@@ -40,18 +37,6 @@ const Index = () => {
     document.body.scrollTop = 0;
     window.scrollTo(0, 0);
     
-    if (isLoading) return;
-
-    // If no user is authenticated, redirect to welcome
-    if (!user) {
-      navigate('/welcome');
-      return;
-    }
-
-    // User is authenticated, mark as visited and stay on main page
-    localStorage.setItem('hasVisitedApp', 'true');
-    setIsCheckingAuth(false);
-    
     // Show onboarding for new users
     if (!hasCompletedOnboarding) {
       setShowOnboarding(true);
@@ -59,27 +44,7 @@ const Index = () => {
       // Show tour if onboarding is done but tour hasn't been seen
       setShowTour(true);
     }
-  }, [user, isLoading, navigate, hasCompletedOnboarding, hasSeenTour]);
-
-  // Show loading state while checking authentication
-  if (isLoading || isCheckingAuth) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50/50 via-white to-green-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 agriculture-gradient rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl">🌱</span>
-          </div>
-          <div className="animate-spin w-8 h-8 border-4 border-agriculture-green border-t-transparent rounded-full mx-auto"></div>
-          <p className="mt-2 text-agriculture-green">{t('loading')}</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If user is not authenticated, this will redirect via useEffect
-  if (!user) {
-    return null;
-  }
+  }, [hasCompletedOnboarding, hasSeenTour]);
 
   const handleOnboardingComplete = () => {
     completeOnboarding();
@@ -96,6 +61,9 @@ const Index = () => {
     completeTour();
     setShowTour(false);
   };
+
+  // Get user name from localStorage or use default
+  const userName = localStorage.getItem('userName') || 'Farmer';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50/50 via-white to-green-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -126,7 +94,7 @@ const Index = () => {
           <div className="relative z-10">
             <div className="flex items-center justify-center gap-2 mb-2">
               <h2 className="text-2xl font-bold text-agriculture-green">
-                {t('welcome.back')}, {user.user_metadata?.name || t('farmer')}! 🌾
+                {t('welcome.back')}, {userName}! 🌾
               </h2>
             </div>
             <p className="text-muted-foreground">
