@@ -1,103 +1,72 @@
-
-import { useState, useEffect } from 'react';
-import { Leaf, Sprout, TreePine } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { Leaf } from 'lucide-react';
 
 interface Loading3DProps {
   message?: string;
-  duration?: number;
 }
 
-export const Loading3D = ({ message = "Loading...", duration = 2000 }: Loading3DProps) => {
+export const Loading3D = ({ message = "Loading..." }: Loading3DProps) => {
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setStage(prev => (prev + 1) % 3);
-    }, 600);
-
+    }, 400);
     return () => clearInterval(interval);
   }, []);
 
-  const icons = [Sprout, Leaf, TreePine];
+  // Memoize particles to prevent re-renders
+  const particles = useMemo(() => 
+    [...Array(8)].map((_, i) => ({
+      left: `${12.5 * i + 6}%`,
+      top: `${20 + (i % 3) * 30}%`,
+      delay: `${i * 0.2}s`
+    })), []
+  );
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-green-900/95 via-emerald-800/95 to-green-700/95 backdrop-blur-sm z-50 flex items-center justify-center">
-      {/* Animated background particles */}
+    <div className="fixed inset-0 bg-gradient-to-br from-primary/95 via-primary/90 to-primary/85 z-50 flex items-center justify-center">
+      {/* Simplified particles */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
+        {particles.map((p, i) => (
           <div
             key={i}
-            className="absolute w-2 h-2 bg-white/10 rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 2}s`
-            }}
+            className="absolute w-2 h-2 bg-white/20 rounded-full animate-pulse"
+            style={{ left: p.left, top: p.top, animationDelay: p.delay }}
           />
         ))}
       </div>
 
       <div className="relative z-10 text-center">
-        {/* 3D rotating container */}
-        <div className="relative w-32 h-32 mx-auto mb-8 perspective-1000">
-          <div className="absolute inset-0 transform-style-preserve-3d animate-spin-slow">
-            {icons.map((Icon, index) => {
-              const isActive = stage === index;
-              return (
-                <div
-                  key={index}
-                  className={`absolute inset-0 w-full h-full transition-all duration-500 transform ${
-                    isActive ? 'scale-110 opacity-100' : 'scale-90 opacity-40'
-                  }`}
-                  style={{
-                    transform: `rotateY(${index * 120}deg) translateZ(60px)`
-                  }}
-                >
-                  <div className="w-full h-full bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 flex items-center justify-center shadow-2xl">
-                    <Icon 
-                      className={`w-12 h-12 text-white transition-all duration-300 ${
-                        isActive ? 'animate-pulse' : ''
-                      }`} 
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        {/* Simplified icon animation */}
+        <div className="w-24 h-24 mx-auto mb-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 flex items-center justify-center">
+          <Leaf className="w-12 h-12 text-white animate-pulse" />
         </div>
 
-        {/* AgriTech Logo */}
-        <div className="mb-6">
-          <div className="w-16 h-16 agriculture-gradient rounded-full flex items-center justify-center mx-auto mb-3 shadow-2xl border-4 border-white/20 backdrop-blur-sm animate-pulse-green">
-            <span className="text-white text-2xl">🌱</span>
+        {/* Logo */}
+        <div className="mb-4">
+          <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span className="text-2xl">🌱</span>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">
-            AgriTech Advisor
-          </h1>
+          <h1 className="text-xl font-bold text-white">AgriTech Advisor</h1>
         </div>
 
         {/* Loading message */}
-        <div className="mb-8">
-          <p className="text-white/90 text-lg mb-4 drop-shadow-md">
-            {message}
-          </p>
-          
-          {/* Progress bar */}
-          <div className="w-64 h-2 bg-white/20 rounded-full mx-auto overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-green-400 to-emerald-300 rounded-full animate-loading-bar"></div>
-          </div>
+        <p className="text-white/90 text-sm mb-4">{message}</p>
+        
+        {/* Progress bar */}
+        <div className="w-48 h-1.5 bg-white/20 rounded-full mx-auto overflow-hidden">
+          <div className="h-full bg-white/80 rounded-full animate-loading-bar" />
         </div>
 
-        {/* Floating growth indicators */}
-        <div className="flex justify-center gap-4">
+        {/* Simple dots indicator */}
+        <div className="flex justify-center gap-2 mt-4">
           {[0, 1, 2].map((i) => (
             <div
               key={i}
-              className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                stage >= i ? 'bg-green-400 scale-110' : 'bg-white/30 scale-100'
+              className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                stage >= i ? 'bg-white' : 'bg-white/30'
               }`}
-              style={{ animationDelay: `${i * 200}ms` }}
             />
           ))}
         </div>

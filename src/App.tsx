@@ -82,6 +82,7 @@ function App() {
                     <Route path="/calendar" element={<Calendar />} />
                     <Route path="/market" element={<Market />} />
                     <Route path="/camera" element={<CameraAnalysis />} />
+                    <Route path="/camera-analysis" element={<CameraAnalysis />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/tools" element={<Tools />} />
                     
