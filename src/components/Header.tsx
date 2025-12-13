@@ -1,10 +1,9 @@
 import { NotificationCenter } from '@/components/NotificationCenter';
-import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { Bell, Settings, User, Menu } from 'lucide-react';
+import { Bell, Settings, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -12,17 +11,10 @@ import { Loading3D } from '@/components/Loading3D';
 import { usePageTransition } from '@/hooks/usePageTransition';
 
 export const Header = () => {
-  const { user, signOut } = useAuth();
   const { t } = useLanguage();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { isTransitioning, currentMessage, navigateWithLoading } = usePageTransition();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigateWithLoading('/welcome', 'Signing out...');
-    setShowMobileMenu(false);
-  };
 
   const handleNavigateToSettings = () => {
     navigateWithLoading('/settings');
@@ -63,18 +55,6 @@ export const Header = () => {
           >
             <Settings className="h-4 w-4" />
           </Button>
-
-          {/* User Menu */}
-          {user && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleSignOut}
-              className="h-9 w-9 touch-manipulation"
-            >
-              <User className="h-4 w-4" />
-            </Button>
-          )}
         </div>
 
         {/* Mobile Menu */}
@@ -120,18 +100,6 @@ export const Header = () => {
                   <span className="text-sm font-medium">Theme</span>
                   <ThemeToggle />
                 </div>
-
-                {/* Sign Out */}
-                {user && (
-                  <Button
-                    variant="ghost"
-                    onClick={handleSignOut}
-                    className="justify-start gap-3 h-12 text-left text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 touch-manipulation"
-                  >
-                    <User className="h-5 w-5" />
-                    Sign Out
-                  </Button>
-                )}
               </div>
             </SheetContent>
           </Sheet>

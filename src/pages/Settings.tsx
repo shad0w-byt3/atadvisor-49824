@@ -12,7 +12,6 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { 
@@ -22,7 +21,6 @@ import {
   Smartphone, 
   Globe, 
   HelpCircle, 
-  LogOut, 
   Info,
   Download,
   Trash2,
@@ -33,7 +31,6 @@ import { toast } from 'sonner';
 
 const Settings = () => {
   const { t } = useLanguage();
-  const { signOut } = useAuth();
   const navigate = useNavigate();
   const { resetOnboarding } = useOnboarding();
   const [notificationSettings, setNotificationSettings] = useState({
@@ -50,22 +47,12 @@ const Settings = () => {
     locationServices: true
   });
 
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      toast.success('Logged out successfully');
-    } catch (error) {
-      toast.error('Failed to log out');
-    }
-  };
-
   const clearCache = () => {
     localStorage.clear();
     toast.success('Cache cleared successfully');
   };
 
   const exportData = () => {
-    // In a real app, this would export user data
     toast.success('Data export initiated. You will receive an email shortly.');
   };
 
@@ -75,7 +62,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50/50 via-white to-green-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-green-50/50 via-white to-green-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header />
       
       <main className="p-4 pb-24">
@@ -279,22 +266,6 @@ const Settings = () => {
                     <Button variant="outline" className="w-full justify-start">
                       <Shield className="h-4 w-4 mr-2" />
                       Privacy Policy
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="agriculture-card">
-                  <CardHeader>
-                    <CardTitle className="text-red-600">Account Actions</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start text-red-600 border-red-200 hover:bg-red-50"
-                      onClick={handleLogout}
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      {t('auth.logout')}
                     </Button>
                   </CardContent>
                 </Card>
