@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { Camera as CameraIcon, Image, Loader2, AlertTriangle, CheckCircle, Info, Bug, Droplets, Sun, Sparkles } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
+import { Camera as CameraIcon, Image, Loader2, AlertTriangle, CheckCircle, Info, Bug, Droplets, Sun, Sparkles, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -85,43 +86,72 @@ export const CropAnalysisAI = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
   const [progress, setProgress] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+
+  const isNative = Capacitor.isNativePlatform();
 
   const takePicture = async () => {
-    try {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: false,
-        resultType: CameraResultType.DataUrl,
-        source: CameraSource.Camera,
-      });
+    if (isNative) {
+      try {
+        const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: CameraResultType.DataUrl,
+          source: CameraSource.Camera,
+        });
 
-      if (image.dataUrl) {
-        setPhoto(image.dataUrl);
-        analyzeImageWithAI(image.dataUrl);
+        if (image.dataUrl) {
+          setPhoto(image.dataUrl);
+          analyzeImageWithAI(image.dataUrl);
+        }
+      } catch (error) {
+        console.error('Error taking picture:', error);
+        toast.error('Failed to take picture. Please try again.');
       }
-    } catch (error) {
-      console.error('Error taking picture:', error);
-      toast.error('Failed to take picture. Please try again.');
+    } else {
+      // Web fallback - use file input with camera capture
+      cameraInputRef.current?.click();
     }
   };
 
   const selectFromGallery = async () => {
-    try {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: false,
-        resultType: CameraResultType.DataUrl,
-        source: CameraSource.Photos,
-      });
+    if (isNative) {
+      try {
+        const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: CameraResultType.DataUrl,
+          source: CameraSource.Photos,
+        });
 
-      if (image.dataUrl) {
-        setPhoto(image.dataUrl);
-        analyzeImageWithAI(image.dataUrl);
+        if (image.dataUrl) {
+          setPhoto(image.dataUrl);
+          analyzeImageWithAI(image.dataUrl);
+        }
+      } catch (error) {
+        console.error('Error selecting from gallery:', error);
+        toast.error('Failed to select image. Please try again.');
       }
-    } catch (error) {
-      console.error('Error selecting from gallery:', error);
-      toast.error('Failed to select image. Please try again.');
+    } else {
+      // Web fallback - use file input
+      fileInputRef.current?.click();
     }
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        setPhoto(dataUrl);
+        analyzeImageWithAI(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+    // Reset input so same file can be selected again
+    event.target.value = '';
   };
 
   const analyzeImageWithAI = async (imageData: string) => {
@@ -350,6 +380,23 @@ export const CropAnalysisAI = () => {
           </div>
         ) : (
           <div className="space-y-3">
+            {/* Hidden file inputs for web fallback */}
+            <input 
+              type="file" 
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <input 
+              type="file" 
+              ref={cameraInputRef}
+              accept="image/*"
+              capture="environment"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+
             <div className="text-center py-4 bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-800">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <CameraIcon className="h-8 w-8 text-agriculture-green" />
@@ -359,7 +406,7 @@ export const CropAnalysisAI = () => {
                 Advanced AI Crop Analysis Ready
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                Take a clear photo for detailed AI disease detection
+                {isNative ? 'Take a clear photo for detailed AI disease detection' : 'Upload or capture a photo for AI analysis'}
               </p>
             </div>
             
@@ -368,7 +415,7 @@ export const CropAnalysisAI = () => {
               className="w-full flex items-center gap-2 bg-agriculture-green hover:bg-agriculture-green/90"
             >
               <CameraIcon className="h-5 w-5" />
-              Capture for AI Analysis
+              {isNative ? 'Capture for AI Analysis' : 'Take Photo'}
             </Button>
             
             <Button 
@@ -376,8 +423,8 @@ export const CropAnalysisAI = () => {
               variant="outline" 
               className="w-full flex items-center gap-2"
             >
-              <Image className="h-5 w-5" />
-              Select from Gallery
+              <Upload className="h-5 w-5" />
+              {isNative ? 'Select from Gallery' : 'Upload Image'}
             </Button>
           </div>
         )}
