@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 142 72% 42%;
+    --primary: 152 45% 28%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -23,7 +23,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 142 50% 35%;
+    --accent: 152 40% 22%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -31,25 +31,25 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 142 72% 42%;
+    --ring: 152 45% 28%;
 
     --radius: 0.75rem;
 
-    --agriculture-green: 142 72% 42%;
-    --agriculture-light-green: 142 55% 88%;
-    --agriculture-earth: 30 25% 45%;
-    --agriculture-warm: 25 75% 60%;
-    --agriculture-success: 142 71% 45%;
-    --agriculture-warning: 48 96% 53%;
-    --agriculture-danger: 0 84% 60%;
-    --agriculture-info: 221 83% 53%;
+    --agriculture-green: 152 45% 28%;
+    --agriculture-light-green: 152 35% 85%;
+    --agriculture-earth: 30 25% 40%;
+    --agriculture-warm: 25 65% 55%;
+    --agriculture-success: 152 50% 35%;
+    --agriculture-warning: 45 90% 50%;
+    --agriculture-danger: 0 75% 55%;
+    --agriculture-info: 210 70% 50%;
     
     /* Enhanced gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(142, 72%, 42%) 0%, hsl(142, 50%, 35%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(142, 55%, 88%) 0%, hsl(142, 71%, 85%) 100%);
-    --gradient-warm: linear-gradient(135deg, hsl(25, 75%, 60%) 0%, hsl(30, 25%, 45%) 100%);
-    --gradient-earth: linear-gradient(135deg, hsl(30, 25%, 45%) 0%, hsl(25, 75%, 60%) 100%);
-    --gradient-fresh: linear-gradient(135deg, hsl(142, 72%, 42%) 0%, hsl(160, 60%, 45%) 100%);
+    --gradient-primary: linear-gradient(145deg, hsl(152, 45%, 32%) 0%, hsl(152, 40%, 22%) 100%);
+    --gradient-secondary: linear-gradient(145deg, hsl(152, 30%, 90%) 0%, hsl(152, 35%, 85%) 100%);
+    --gradient-warm: linear-gradient(145deg, hsl(25, 65%, 55%) 0%, hsl(30, 25%, 40%) 100%);
+    --gradient-earth: linear-gradient(145deg, hsl(30, 25%, 40%) 0%, hsl(25, 65%, 55%) 100%);
+    --gradient-fresh: linear-gradient(145deg, hsl(152, 45%, 32%) 0%, hsl(165, 40%, 28%) 100%);
     
     /* Shadow variables */
     --shadow-soft: 0 2px 8px -2px hsl(var(--agriculture-green) / 0.1);
@@ -64,7 +64,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 142 72% 50%;
+    --primary: 152 50% 38%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -78,21 +78,21 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
     
-    --agriculture-green: 142 72% 50%;
-    --agriculture-light-green: 142 40% 25%;
-    --agriculture-earth: 30 25% 55%;
-    --agriculture-warm: 25 75% 70%;
-    --agriculture-success: 142 71% 55%;
-    --agriculture-warning: 48 96% 63%;
-    --agriculture-danger: 0 84% 70%;
-    --agriculture-info: 221 83% 63%;
+    --agriculture-green: 152 50% 38%;
+    --agriculture-light-green: 152 35% 22%;
+    --agriculture-earth: 30 25% 50%;
+    --agriculture-warm: 25 65% 65%;
+    --agriculture-success: 152 50% 42%;
+    --agriculture-warning: 45 90% 58%;
+    --agriculture-danger: 0 75% 60%;
+    --agriculture-info: 210 70% 55%;
     
     /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(142, 72%, 50%) 0%, hsl(142, 50%, 40%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(142, 40%, 25%) 0%, hsl(142, 71%, 30%) 100%);
-    --gradient-warm: linear-gradient(135deg, hsl(25, 75%, 70%) 0%, hsl(30, 25%, 55%) 100%);
-    --gradient-earth: linear-gradient(135deg, hsl(30, 25%, 55%) 0%, hsl(25, 75%, 70%) 100%);
-    --gradient-fresh: linear-gradient(135deg, hsl(142, 72%, 50%) 0%, hsl(160, 60%, 50%) 100%);
+    --gradient-primary: linear-gradient(145deg, hsl(152, 50%, 42%) 0%, hsl(152, 45%, 32%) 100%);
+    --gradient-secondary: linear-gradient(145deg, hsl(152, 35%, 22%) 0%, hsl(152, 40%, 28%) 100%);
+    --gradient-warm: linear-gradient(145deg, hsl(25, 65%, 65%) 0%, hsl(30, 25%, 50%) 100%);
+    --gradient-earth: linear-gradient(145deg, hsl(30, 25%, 50%) 0%, hsl(25, 65%, 65%) 100%);
+    --gradient-fresh: linear-gradient(145deg, hsl(152, 50%, 42%) 0%, hsl(165, 45%, 35%) 100%);
     
     /* Dark shadow variables */
     --shadow-soft: 0 2px 8px -2px hsl(var(--agriculture-green) / 0.15);
