@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
-import { Camera as CameraIcon, Loader2, AlertTriangle, CheckCircle, Info, Bug, Droplets, Sun, Sparkles, Upload } from 'lucide-react';
+import { Camera as CameraIcon, Loader2, AlertTriangle, CheckCircle, Info, Bug, Droplets, Sun, Sparkles, Upload, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -279,8 +279,17 @@ export const CropAnalysisAI = () => {
                       <Sparkles className="h-4 w-4" />
                       AI Health Assessment
                     </h4>
-                    <Badge variant="outline" className="bg-background">
-                      {analysisResult.confidence}% AI Confidence
+                    <Badge 
+                      variant="outline" 
+                      className={`${
+                        analysisResult.confidence >= 85 
+                          ? 'bg-green-50 text-green-700 border-green-300 dark:bg-green-900/30 dark:text-green-400 dark:border-green-700' 
+                          : analysisResult.confidence >= 70 
+                            ? 'bg-yellow-50 text-yellow-700 border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-700'
+                            : 'bg-red-50 text-red-700 border-red-300 dark:bg-red-900/30 dark:text-red-400 dark:border-red-700'
+                      }`}
+                    >
+                      {analysisResult.confidence >= 85 ? 'High' : analysisResult.confidence >= 70 ? 'Medium' : 'Low'} Confidence ({analysisResult.confidence}%)
                     </Badge>
                   </div>
                   <div className="flex items-center gap-3">
@@ -291,6 +300,9 @@ export const CropAnalysisAI = () => {
                       <Progress value={analysisResult.health} className="w-full" />
                     </div>
                   </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Crop health score based on AI visual analysis
+                  </p>
                 </div>
 
                 {/* AI Disease Detection */}
@@ -405,6 +417,33 @@ export const CropAnalysisAI = () => {
                       AI Market Insights
                     </h5>
                     <p className="text-sm text-purple-800 dark:text-purple-300">{analysisResult.marketAdvice}</p>
+                  </div>
+
+                  {/* Expert Consultation CTA */}
+                  <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
+                    <h5 className="font-medium text-amber-700 dark:text-amber-400 mb-2 flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      Need Expert Help?
+                    </h5>
+                    <p className="text-sm text-amber-800 dark:text-amber-300 mb-3">
+                      For complex issues, consult your local agricultural extension officer or agronomist.
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="w-full border-amber-300 text-amber-700 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:hover:bg-amber-900/30"
+                      onClick={() => window.location.href = '/expert-finder'}
+                    >
+                      Find Local Expert
+                    </Button>
+                  </div>
+
+                  {/* AI Disclaimer */}
+                  <div className="bg-muted/50 p-3 rounded-lg border border-border">
+                    <p className="text-xs text-muted-foreground text-center">
+                      <AlertTriangle className="h-3 w-3 inline mr-1" />
+                      <strong>Disclaimer:</strong> This AI analysis is for guidance only. Always verify with local agricultural experts before applying treatments. Results may vary based on image quality and conditions.
+                    </p>
                   </div>
                 </div>
               </div>

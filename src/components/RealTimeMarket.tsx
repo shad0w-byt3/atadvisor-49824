@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, TrendingDown, Minus, RefreshCw } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, RefreshCw, WifiOff, Info } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface MarketPrice {
@@ -15,6 +15,9 @@ interface MarketPrice {
   change: string;
 }
 
+const CACHE_KEY = 'cached_market_prices';
+const CACHE_TIME_KEY = 'cached_market_time';
+
 // Mock market data for Rwanda agricultural markets
 const generateMarketPrices = (): MarketPrice[] => [
   { id: '1', crop_name: 'Tomatoes', location: 'Kigali', price_per_kg: 850, currency: 'RWF', trend: 'up', change: '+12%' },
@@ -26,13 +29,53 @@ const generateMarketPrices = (): MarketPrice[] => [
 ];
 
 export const RealTimeMarket = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [prices, setPrices] = useState<MarketPrice[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [usingCache, setUsingCache] = useState(false);
+
+  // Load cached prices
+  const loadCachedPrices = (): MarketPrice[] | null => {
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+      if (cached && cachedTime) {
+        setLastUpdated(new Date(cachedTime));
+        return JSON.parse(cached);
+      }
+    } catch (e) {
+      console.error('Error loading cached prices:', e);
+    }
+    return null;
+  };
+
+  // Save prices to cache
+  const savePricesToCache = (priceData: MarketPrice[]) => {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(priceData));
+      localStorage.setItem(CACHE_TIME_KEY, new Date().toISOString());
+    } catch (e) {
+      console.error('Error saving prices to cache:', e);
+    }
+  };
 
   const fetchMarketPrices = () => {
     setLoading(true);
+    setUsingCache(false);
+
+    // Check if offline
+    if (!navigator.onLine) {
+      const cached = loadCachedPrices();
+      if (cached) {
+        setPrices(cached);
+        setUsingCache(true);
+      }
+      setLoading(false);
+      return;
+    }
+
     // Simulate API delay
     setTimeout(() => {
       const basePrices = generateMarketPrices();
@@ -43,16 +86,28 @@ export const RealTimeMarket = () => {
       }));
       setPrices(updatedPrices);
       setLastUpdated(new Date());
+      savePricesToCache(updatedPrices);
       setLoading(false);
     }, 800);
   };
 
   useEffect(() => {
+    // Handle online/offline status
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
     fetchMarketPrices();
     
     // Auto-refresh every 5 minutes
     const interval = setInterval(fetchMarketPrices, 300000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
   }, []);
 
   const getTrendIcon = (trend: string) => {
@@ -105,39 +160,65 @@ export const RealTimeMarket = () => {
         <div className="flex items-center justify-between">
           <CardTitle className="text-agriculture-green flex items-center gap-2">
             📊 {t('market.title')}
-            <Badge variant="secondary" className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              Live
-            </Badge>
+            {isOffline || usingCache ? (
+              <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                <WifiOff className="h-3 w-3 mr-1" />
+                {language === 'en' ? 'Cached' : language === 'fr' ? 'En cache' : 'Yabitswe'}
+              </Badge>
+            ) : (
+              <Badge variant="secondary" className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                {language === 'en' ? 'Live' : language === 'fr' ? 'En direct' : 'Ubuzima'}
+              </Badge>
+            )}
           </CardTitle>
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={fetchMarketPrices}
             className="h-8 w-8"
+            disabled={loading}
           >
-            <RefreshCw className="h-4 w-4" />
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Updated: {lastUpdated.toLocaleTimeString()}
+          {usingCache && (
+            <span className="text-amber-600 dark:text-amber-400">
+              {language === 'en' ? 'Last updated: ' : language === 'fr' ? 'Dernière mise à jour: ' : 'Igihe cyanyuma: '}
+            </span>
+          )}
+          {lastUpdated.toLocaleString()}
         </p>
       </CardHeader>
       <CardContent>
+        {/* Offline warning */}
+        {usingCache && (
+          <div className="mb-3 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
+            <p className="text-xs text-amber-700 dark:text-amber-400 flex items-center gap-1">
+              <Info className="h-3 w-3" />
+              {language === 'en' ? 'Showing cached prices. Connect to internet for live updates.' :
+               language === 'fr' ? 'Affichage des prix en cache. Connectez-vous pour les mises à jour.' :
+               'Kwerekana ibiciro byabitswe. Kora kuri interineti kugirango ubone amakuru mashya.'}
+            </p>
+          </div>
+        )}
+        
         <div className="space-y-3">
           {prices.map((price) => (
             <div 
               key={price.id} 
               className="flex justify-between items-center p-2.5 bg-green-50/50 dark:bg-green-900/10 rounded-lg hover:bg-green-100/50 dark:hover:bg-green-900/20 transition-colors"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col">
                 <span className="font-medium text-foreground">{price.crop_name}</span>
+                <span className="text-xs text-muted-foreground">{price.location}</span>
               </div>
               <div className="text-right flex items-center gap-3">
                 <div>
                   <span className="font-bold text-agriculture-green dark:text-green-400">
                     {price.price_per_kg.toLocaleString()} {price.currency}
                   </span>
-                  <span className="text-xs text-muted-foreground">{t('market.perKg')}</span>
+                  <span className="text-xs text-muted-foreground"> {t('market.perKg')}</span>
                 </div>
                 <div className={`flex items-center gap-1 text-xs ${getTrendColor(price.trend)}`}>
                   {getTrendIcon(price.trend)}
@@ -147,9 +228,16 @@ export const RealTimeMarket = () => {
             </div>
           ))}
         </div>
-        <div className="mt-4 pt-3 border-t border-border">
+        <div className="mt-4 pt-3 border-t border-border space-y-1">
           <p className="text-xs text-muted-foreground text-center">
-            💡 Prices from major Rwandan agricultural markets
+            📍 {language === 'en' ? 'Source: Rwanda Agricultural Markets' : 
+                language === 'fr' ? 'Source: Marchés Agricoles du Rwanda' : 
+                'Inkomoko: Amasoko y\'Ubuhinzi mu Rwanda'}
+          </p>
+          <p className="text-xs text-muted-foreground/70 text-center">
+            {language === 'en' ? 'Prices are indicative and may vary by seller' :
+             language === 'fr' ? 'Les prix sont indicatifs et peuvent varier' :
+             'Ibiciro ni ibigereranyo bishobora gutandukana'}
           </p>
         </div>
       </CardContent>
