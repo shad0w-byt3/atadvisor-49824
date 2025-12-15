@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Lightbulb, Calendar, Cloud, Leaf, Target, BookOpen, Sparkles, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AITip {
   title: string;
@@ -129,13 +130,52 @@ const CustomTips = () => {
     
     setIsGenerating(true);
     
-    // Simulate AI processing
-    setTimeout(() => {
+    try {
+      // Get user profile for personalization
+      const savedProfile = localStorage.getItem('userProfile');
+      const profile = savedProfile ? JSON.parse(savedProfile) : {};
+      
+      // Call the real AI edge function
+      const { data, error } = await supabase.functions.invoke('ai-custom-tips', {
+        body: {
+          farmProfile: {
+            location: profile.location || 'Kigali, Rwanda',
+            crops: profile.crops || ['maize', 'beans', 'cassava'],
+            farmSize: profile.farmSize || '2 hectares',
+            experience: profile.experience || 'intermediate'
+          },
+          weatherData: {
+            temperature: '24°C',
+            humidity: '68%',
+            rainfall: 'moderate',
+            season: 'dry season'
+          },
+          marketData: {
+            tomatoPrices: 'high',
+            beanPrices: 'stable',
+            fertilizerCosts: 'moderate'
+          },
+          timeframe: timeframe
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to generate tips');
+      }
+
+      const tips = data?.tips || mockTipsData[timeframe] || [];
+      setAiTips(tips);
+      setLastGenerated(new Date().toLocaleTimeString());
+      toast.success(`🤖 AI generated ${tips.length} personalized tips!`);
+    } catch (error) {
+      console.error('Error generating AI tips:', error);
+      // Fallback to mock data
       setAiTips(mockTipsData[timeframe] || []);
       setLastGenerated(new Date().toLocaleTimeString());
+      toast.warning('Using offline tips. Connect for full AI features.');
+    } finally {
       setIsGenerating(false);
-      toast.success(`🤖 AI generated ${mockTipsData[timeframe]?.length || 0} personalized tips!`);
-    }, 1200);
+    }
   };
 
   useEffect(() => {
