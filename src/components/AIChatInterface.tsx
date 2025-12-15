@@ -205,6 +205,14 @@ export const AIChatInterface = () => {
            language === 'fr' ? 'Propulsé par une vraie IA - Posez vos questions!' :
            'Igenzurwa na AI nyayo - Baza ibibazo byose!'}
         </p>
+        {/* AI Disclaimer */}
+        <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
+          <p className="text-xs text-amber-700 dark:text-amber-400">
+            ⚠️ {language === 'en' ? 'AI advice is for guidance only. Consult local experts for critical decisions.' :
+                language === 'fr' ? 'Les conseils IA sont indicatifs. Consultez des experts locaux pour les décisions critiques.' :
+                'Inama za AI ni iz\'ubuyobozi gusa. Baza impuguke z\'aho uherereye ku byemezo bikomeye.'}
+          </p>
+        </div>
       </div>
 
       {/* Quick Questions */}
