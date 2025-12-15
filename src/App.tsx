@@ -14,6 +14,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import { OfflineIndicator } from "@/components/OfflineIndicator";
 import { Analytics } from "@/components/Analytics";
+import { UserProfileSetup } from "@/components/UserProfileSetup";
 import Index from "./pages/Index";
 import Settings from "./pages/Settings";
 import Calendar from "./pages/Calendar";
@@ -76,6 +77,7 @@ function App() {
               <LanguageProvider>
                 <TooltipProvider>
                   <Toaster />
+                  <UserProfileSetup />
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/settings" element={<Settings />} />
